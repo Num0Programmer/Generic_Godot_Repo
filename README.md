@@ -3,5 +3,5 @@ A repository which contains a Godot file where I am practicing Godot and impleme
 
 Please feel free to use the code from this repository for your own project, or to extend the code
 
-# Author(s)
+### Author(s)
 Num0Programmer
