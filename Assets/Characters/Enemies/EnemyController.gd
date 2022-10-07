@@ -19,6 +19,9 @@ func _physics_process( _delta : float ) -> void:
 	
 	# get direction to player
 	move_direction = direction_to_player()
+	move_direction = translate_move_direction( move_direction )
+	
+	print( move_direction )
 	
 	# update path checking
 	path_check.set_cast_to( move_direction * path_check_dist )
@@ -46,7 +49,7 @@ func direction_to_player() -> Vector2:
 func _move( time_step : float ) -> void:
 	
 	jumping = ( path_check.is_colliding() and
-				( -1.0 < move_direction.y and move_direction.y < -0.2 ) and
+				( -0.6 <= move_direction.y and move_direction.y <= -0.3 ) and
 				ground_check.is_colliding() )
 	
 	if move_direction.x != 0:
@@ -67,3 +70,20 @@ func _move( time_step : float ) -> void:
 	# animate sprite
 	
 	velocity = move_and_slide( velocity )
+
+
+func translate_move_direction( input_dir : Vector2 ) -> Vector2:
+	
+	if input_dir.y <= -0.5:
+		input_dir.y = -0.5
+		
+		if path_check.get_cast_to().x > 0:
+			
+			input_dir.x = 1
+			
+		else:
+			
+			input_dir.x = -1
+	
+	
+	return input_dir
