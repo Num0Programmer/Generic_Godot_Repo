@@ -3,6 +3,11 @@ extends CharacterController
 class_name EnemyController
 
 
+# defines a percentage how far above the player can be which will influence if the
+# enemy determines it needs to move left or right to get up to the player
+# TODO: this will also be used to determine which direction to head when the
+# player is below the enemy character
+export( float ) var percent_above : float = -0.5
 export( float ) var path_check_dist : float = 50
 
 var move_direction : Vector2 = Vector2.ZERO
@@ -74,16 +79,24 @@ func _move( time_step : float ) -> void:
 
 func translate_move_direction( input_dir : Vector2 ) -> Vector2:
 	
-	if input_dir.y <= -0.5:
-		input_dir.y = -0.5
-		
-		if path_check.get_cast_to().x > 0:
-			
-			input_dir.x = 1
-			
-		else:
-			
-			input_dir.x = -1
+	var change_input_dir : bool = false
 	
+	if input_dir.y <= -0.5:
+		input_dir.y = -0.3
+		
+		change_input_dir = true
+		
+	elif input_dir.y >= 0.5:
+		input_dir.y = 0.3
+		
+		change_input_dir = true
+	
+	if change_input_dir and path_check.get_cast_to().x > 0:
+		
+		input_dir.x = 1
+		
+	elif change_input_dir:
+		
+		input_dir.x = -1
 	
 	return input_dir
